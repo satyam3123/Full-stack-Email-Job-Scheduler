@@ -1,13 +1,13 @@
 FROM node:22-alpine AS build
 WORKDIR /app
 
-# Copy package files from correct subfolders
-COPY outputs/reachinbox-email-scheduler/package.json outputs/reachinbox-email-scheduler/package-lock.json ./
-COPY outputs/reachinbox-email-scheduler/apps/server/package.json outputs/reachinbox-email-scheduler/apps/server/package.json
-COPY outputs/reachinbox-email-scheduler/apps/web/package.json outputs/reachinbox-email-scheduler/apps/web/package.json
+# Copy package files relative to the project root context
+COPY package.json package-lock.json ./
+COPY apps/server/package.json apps/server/package.json
+COPY apps/web/package.json apps/web/package.json
 
 RUN npm ci --no-audit --no-fund
-COPY outputs/reachinbox-email-scheduler/ .
+COPY . .
 
 ARG VITE_API_URL=""
 ENV VITE_API_URL=$VITE_API_URL
