@@ -1,0 +1,40 @@
+{
+  "name": "@reachinbox/api",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "start": "node dist/index.js",
+    "build": "prisma generate && tsc -p tsconfig.json",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:deploy": "prisma migrate deploy"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.5.0",
+    "bullmq": "^5.40.3",
+    "connect-redis": "^8.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "express-session": "^1.18.1",
+    "ioredis": "^5.6.1",
+    "nodemailer": "^6.10.1",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0",
+    "zod": "^3.24.3"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.1",
+    "@types/express-session": "^1.18.0",
+    "@types/node": "^22.15.2",
+    "@types/nodemailer": "^6.4.17",
+    "@types/passport": "^1.0.17",
+    "@types/passport-google-oauth20": "^2.0.16",
+    "prisma": "^6.5.0",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.3"
+  }
+}
