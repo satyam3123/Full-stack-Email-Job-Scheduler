@@ -1,14 +1,17 @@
 FROM node:22-alpine AS build
 WORKDIR /app
 
-# Copy root-level package files from subfolder
+# Create destination directories first
+RUN mkdir -p apps/api apps/web
+
+# Copy package files from repository subfolder
 COPY outputs/reachinbox-email-scheduler/package.json outputs/reachinbox-email-scheduler/package-lock.json ./
-COPY outputs/reachinbox-email-scheduler/apps/server/package.json apps/server/package.json
-COPY outputs/reachinbox-email-scheduler/apps/web/package.json apps/web/package.json
+COPY outputs/reachinbox-email-scheduler/apps/api/package.json ./apps/api/
+COPY outputs/reachinbox-email-scheduler/apps/web/package.json ./apps/web/
 
 RUN npm ci --no-audit --no-fund
 
-# Copy remaining source code from subfolder context
+# Copy source code from subfolder
 COPY outputs/reachinbox-email-scheduler/ .
 
 ARG VITE_API_URL=""
@@ -20,12 +23,12 @@ FROM node:22-alpine
 WORKDIR /app
 ENV NODE_ENV=production
 
-# Copy built dependencies and server artifacts
+# Copy compiled artifacts using the correct api path
 COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/package.json ./package.json
-COPY --from=build /app/apps/server ./apps/server
+COPY --from=build /app/apps/api ./apps/api
 COPY --from=build /app/apps/web/dist ./apps/web/dist
 
 EXPOSE 4000
 
-CMD ["sh", "-c", "npx prisma migrate deploy --schema apps/server/prisma/schema.prisma && node apps/server/dist/index.js"]
+CMD ["sh", "-c", "npx prisma migrate deploy --schema apps/api/prisma/schema.prisma && node apps/api/dist/index.js"]
