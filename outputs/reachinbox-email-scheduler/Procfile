@@ -1,0 +1,2 @@
+web: node outputs/reachinbox-email-scheduler/apps/server/dist/index.js
+worker: node outputs/reachinbox-email-scheduler/apps/server/dist/worker.js
